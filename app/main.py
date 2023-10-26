@@ -48,6 +48,9 @@ async def home(request: Request, database: Session = Depends(get_db),
 async def todo_add(request: Request, task: str = Form(...), database: Session = Depends(get_db)):
     """Add new todo
     """
+    if 500 < len(task):
+        msg = "Your task contains more than 500 char symbol ;("
+        return templates.TemplateResponse("err_msg.html", {"request": request, "err": msg})
     todo = models.Todo(task=task)
     logger.info(f"Creating todo: {todo}")
     database.add(todo)
