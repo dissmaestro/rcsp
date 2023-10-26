@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <form action="/add" method="post">
+        <textarea name="task" rows="5" placeholder="Введите задачу"></textarea>
+        <button type="submit">Добавить</button>
+    </form>
+
+    <br>
+    <h2>Задачи</h2>
+
+    <div>
+        {% for todo in todos %}
+            <div class="task">
+                {% if todo.completed %}
+                    <strike>{{ todo.task }}</strike>
+                {% else %}
+                    {{ todo.task }}
+                {% endif %}
+                <small>
+                    <a href="edit/{{ todo.id }}">Редактировать</a>
+                    <a href="delete/{{ todo.id }}">Удалить</a>
+                </small>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div>
+    Страницы:
+        {% for i in range(pages) %}
+            <a rel={{ i }} {% if i == page %}style="color:red;"{% endif %}
+                href="/?limit={{ limit }}&skip={{ i }}">{{ i }}</a>
+        {% endfor %}
+    </div>
+
+{% endblock content %}
