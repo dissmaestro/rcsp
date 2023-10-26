@@ -96,6 +96,6 @@ async def todo_delete(request: Request, todo_id: int, database: Session = Depend
 
 
 @app.exception_handler(RequestValidationError)
-async def empty_error(request: Request, database: Session = Depends(get_db)):
+async def empty_error(request: Request, database: Session = Depends(get_db)): # proverka dobavleniiya pustogo faila
     return templates.TemplateResponse("error_empty.html", {"request": request})
 
