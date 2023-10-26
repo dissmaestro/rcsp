@@ -89,6 +89,9 @@ async def todo_delete(request: Request, todo_id: int, database: Session = Depend
     """Delete todo
     """
     todo = database.query(models.Todo).filter(models.Todo.id == todo_id).first()
+    if not todo:
+        msg = "You cant delete already deleted todo"
+        return templates.TemplateResponse("err_msg.html", {"request": request, "err": msg})
     logger.info(f"Deleting todo: {todo}")
     database.delete(todo)
     database.commit()
