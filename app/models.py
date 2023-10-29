@@ -19,7 +19,7 @@ class Todo(Base):
     """
     __tablename__ = 'todos'
     id = Column(Integer, primary_key=True)
-    task = Column(Text)
+    title = Column(Text)
     completed = Column(Boolean, default=False)
     tag = Column(Text, default=Tags.plans)
 

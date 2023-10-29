@@ -8,6 +8,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
+from typing import Annotated
 from database import init_db, get_db, Session
 import models
 
@@ -26,7 +27,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
 async def home(request: Request, database: Session = Depends(get_db),
-               limit: int = 5, skip: int = 0):
+               limit: int = 10, skip: int = 0):
     """Main page with todo list
     """
     logger.info("In home")
@@ -45,13 +46,13 @@ async def home(request: Request, database: Session = Depends(get_db),
 
 
 @app.post("/add")
-async def todo_add(request: Request, task: str = Form(...), database: Session = Depends(get_db)):
+async def todo_add(request: Request, title: str = Form(...), database: Session = Depends(get_db)):
     """Add new todo
     """
-    if 500 < len(task):
+    if 500 < len(title):
         msg = "Your task contains more than 500 char symbol ;("
         return templates.TemplateResponse("err_msg.html", {"request": request, "err": msg})
-    todo = models.Todo(task=task)
+    todo = models.Todo(title=title)
     logger.info(f"Creating todo: {todo}")
     database.add(todo)
     database.commit()
@@ -72,7 +73,7 @@ async def todo_get(request: Request, todo_id: int, database: Session = Depends(g
 async def todo_edit(
         request: Request,
         todo_id: int,
-        task: str = Form(...),
+        title: str = Form(...),
         completed: bool = Form(False),
         tag: str = Form(None),
         database: Session = Depends(get_db)):
@@ -80,7 +81,7 @@ async def todo_edit(
     """
     todo = database.query(models.Todo).filter(models.Todo.id == todo_id).first()
     logger.info(f"Editting todo: {todo}")
-    todo.task = task
+    todo.title = title
     todo.completed = completed
     todo.tag = tag
     database.commit()

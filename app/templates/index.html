@@ -14,9 +14,9 @@
         {% for todo in todos %}
             <div class="task">
                 {% if todo.completed %}
-                    <strike>{{ todo.task }}</strike>
+                    <strike>{{ todo.title }}</strike>
                 {% else %}
-                    {{ todo.task }}
+                    {{ todo.title }}
                 {% endif %}
                 <small>
                     <a href="edit/{{ todo.id }}">Редактировать</a>
