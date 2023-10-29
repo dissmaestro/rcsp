@@ -19,6 +19,11 @@
                     {{ todo.title }}
                 {% endif %}
                 <small>
+                    {% if todo.completed %}
+                        <a href="change_status/{{ todo.id }}">Выполнено</a>
+                    {% else %}
+                        <a href="change_status/{{ todo.id }}">Не выполнено</a>
+                    {% endif %}
                     <a href="edit/{{ todo.id }}">Редактировать</a>
                     <a href="delete/{{ todo.id }}">Удалить</a>
                 </small>

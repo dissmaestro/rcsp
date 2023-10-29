@@ -83,9 +83,9 @@ async def todo_edit(
     todo = database.query(models.Todo).filter(models.Todo.id == todo_id).first()
     logger.info(f"Editting todo: {todo}")
     todo.title = title
-    todo.details = details
     todo.completed = completed
     todo.tag = tag
+    todo.details = details
     database.commit()
     return RedirectResponse(url=app.url_path_for("home"), status_code=status.HTTP_303_SEE_OTHER)
 
@@ -102,9 +102,33 @@ async def todo_delete(request: Request, todo_id: int, database: Session = Depend
     database.delete(todo)
     database.commit()
     return RedirectResponse(url=app.url_path_for("home"), status_code=status.HTTP_303_SEE_OTHER)
+@app.get("/change_status/{todo_id}")
+async def change_status(request: Request, todo_id: int, database: Session = Depends(get_db)):
+    """Changr status todo
+    """
+    todo = database.query(models.Todo).filter(models.Todo.id == todo_id).first()
+    todo.completed = not todo.completed
+    database.commit()
+    return RedirectResponse(url=app.url_path_for("home"), status_code=status.HTTP_303_SEE_OTHER)
 
 
-# @app.exception_handler(RequestValidationError)
-# async def empty_error(request: Request, database: Session = Depends(get_db)): # proverka dobavleniiya pustogo faila
-#     return templates.TemplateResponse("error_empty.html", {"request": request})
+@app.exception_handler(RequestValidationError)
+async def empty_error(request: Request, database: Session = Depends(get_db)): # proverka dobavleniiya pustogo faila
+    return templates.TemplateResponse("error_empty.html", {"request": request})
+
 #
+# @app.get("/completed/{todo_id}")
+# async def todo_completed_get(
+#         request: Request,
+#         todo_id: int,
+#         database: Session = Depends(get_db)):
+#     """Reverse todo complete field
+#     """
+#     todo = database.query(models.Todo).filter(models.Todo.id == todo_id).first()
+#     if not todo:
+#         alert_msg = 'You try to edit completed field non existent todo'
+#         return templates.TemplateResponse("error_alert.html", {"request": request, "alert_msg": alert_msg})
+#
+#     await todo_edit(request=request, todo_id=todo_id, title=todo.title, details=todo.details, completed=not todo.completed, tag=todo.tag,
+#                     database=database)
+#     return RedirectResponse(url=app.url_path_for("home"), status_code=status.HTTP_303_SEE_OTHER)
