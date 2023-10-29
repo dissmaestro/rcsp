@@ -22,6 +22,8 @@ class Todo(Base):
     title = Column(Text)
     completed = Column(Boolean, default=False)
     tag = Column(Text, default=Tags.plans)
+    details = Column(Text)
+
 
     def __repr__(self):
         return f'<Todo {self.id}>'

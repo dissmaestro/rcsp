@@ -76,12 +76,14 @@ async def todo_edit(
         title: str = Form(...),
         completed: bool = Form(False),
         tag: str = Form(None),
+        details: str = Form(...),
         database: Session = Depends(get_db)):
     """Edit todo
     """
     todo = database.query(models.Todo).filter(models.Todo.id == todo_id).first()
     logger.info(f"Editting todo: {todo}")
     todo.title = title
+    todo.details = details
     todo.completed = completed
     todo.tag = tag
     database.commit()
@@ -102,7 +104,7 @@ async def todo_delete(request: Request, todo_id: int, database: Session = Depend
     return RedirectResponse(url=app.url_path_for("home"), status_code=status.HTTP_303_SEE_OTHER)
 
 
-@app.exception_handler(RequestValidationError)
-async def empty_error(request: Request, database: Session = Depends(get_db)): # proverka dobavleniiya pustogo faila
-    return templates.TemplateResponse("error_empty.html", {"request": request})
-
+# @app.exception_handler(RequestValidationError)
+# async def empty_error(request: Request, database: Session = Depends(get_db)): # proverka dobavleniiya pustogo faila
+#     return templates.TemplateResponse("error_empty.html", {"request": request})
+#

@@ -5,7 +5,9 @@
         <div class="task">
         <h2>Заголовок задачи</h2>
         </div>
-        <textarea name="task" rows="5">{{todo.title}}</textarea>
+        <textarea name="task" style="background-color: blue;" rows="5">{{todo.title}}</textarea>
+        <h4>Детали для задачи<h4>
+        <textarea name="details" rows="2" style="background-color: green;">{{todo.details}}</textarea>
         <label for="completed">Выполнено?</label>
         <input type="checkbox" name="completed" {% if todo.completed %}checked{% endif %}>
         <select name="tag">
