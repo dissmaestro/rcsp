@@ -1,4 +1,4 @@
-FROM 2020-3-00-lr1
+FROM grech-lr1
 
 RUN apt-get update && apt-get install curl -y && rm -rf /var/lib/apt/lists/*
 

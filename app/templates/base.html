@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ToDo App</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/new.css') }}">
 </head>
 <body>
     <main>
@@ -14,6 +14,17 @@
         {% block content %}
         
         {% endblock content %}
+        <footer class="my">
+            <form action="/list/" method="get">
+                <button type="submit">Лист</button>
+            </form>
+            <form action="/export/" method="get">
+                <button type="submit">Экспорт</button>
+            </form>
+            <form action="/visual/" method="get">
+                <button type="submit">Визуализация</button>
+            </form>
+        </footer>
     </main>
 </body>
 </html>
